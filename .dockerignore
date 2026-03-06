@@ -1,0 +1,14 @@
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+dist
+README.md
+nest-cli.json
+test
+pipeline/env/*/parameters.json
+pipeline/env/*/secrets.json
+parameters.json
+secrets.json
+parameters.example.json
+secrets.example.json
