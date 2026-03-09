@@ -37,6 +37,9 @@ jobs:
             git pull origin main
             npm install
             npm run build
-
-            pm2 restart app
-
+            
+      - name: Upload test report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: coverage/lcov-report/index.html
