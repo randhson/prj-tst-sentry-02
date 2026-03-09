@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    container_name: ${COMPOSE_PROJECT_NAME:-prj-tst-sentry-02}
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - n8n-net
+    labels:
+      - "traefik.enable=true"
+
+      # ── Roteamento HTTPS ──────────────────────────────────────────────────────
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-sentry-orch}.rule=Host(`${APP_HOST}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-sentry-orch}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-sentry-orch}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-sentry-orch}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+
+      # ── Porta interna da aplicação ────────────────────────────────────────────
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-sentry-orch}.loadbalancer.server.port=3000"
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+networks:
+  n8n-net:
+    external: true
