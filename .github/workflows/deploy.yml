@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout repository
@@ -36,4 +37,5 @@ jobs:
             git pull origin main
             npm install
             npm run build
+
             pm2 restart app
