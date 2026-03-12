@@ -22,3 +22,6 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+
+# N8N workflows (gerenciados diretamente na instância)
+n8n/
